@@ -79,6 +79,7 @@
     "@types/lodash.get": "^4.4.3",
     "@types/rebass": "^0.2.22",
     "@types/resumablejs": "^1.0.5",
+    "antd": "^3.7.2",
     "axios": "^0.16.2",
     "calendar-base": "^0.3.0",
     "casual": "^1.5.19",
@@ -164,6 +165,7 @@
     "url-search-params": "^0.10.0",
     "uuid": "^3.1.0",
     "uuid-v4": "^0.1.0",
+    "webpack": "^3.11.0",
     "whatwg-fetch": "^2.0.3",
     "xregexp": "^3.2.0"
   },
