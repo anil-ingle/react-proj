@@ -31,6 +31,7 @@ const DisplayFormButton = styled.default.div`
   
 `;
 
+// connect kelas ka 
 interface DispatchProps {
     login: (loginAction: any) => {};
 }
@@ -46,7 +47,7 @@ export class LoginPage extends React.Component<Props, StateProps> {
         password: '',
 
     };
-    usernameChange = (e: string) => {
+    usernameChange = (e: string) => { 
         let userName = e;
         this.setState({
             userName: userName
@@ -92,7 +93,7 @@ export class LoginPage extends React.Component<Props, StateProps> {
                                     type="primary"
                                     htmlType="submit"
                                     style={{ width: '400px' }}
-                                    onClick={this.onLogin}
+                                    onClick={() => this.onLogin()}
                                 >
 
                                     log in

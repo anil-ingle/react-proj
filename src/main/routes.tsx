@@ -18,6 +18,7 @@ import * as Rebass from 'rebass';
 // import { ProductsGridView } from '../container/productsViews';
 // import { Profile } from '../container/profile';
 import LoginPage from '../component/LoginPage';
+import Header from '../component/Header';
 // const Body = styled.div`
 // max-width: 1184px;
 // width: 90%;
@@ -29,11 +30,11 @@ const history = createBrowserHistory();
 export default (
     <Router history={history}>
         <Rebass.Provider>
-            {/* <Header />
-            <NavBar /> */}
+            <Header/>
+            {/* <NavBar /> */}
             <div>
                 <Switch>
-                    <Route path="/" component={LoginPage} />
+                    {/* <Route path="/" component={LoginPage} /> */}
                     {/* <Route exact path="/" component={HomePage} /> */}
                     {/* <Route path="/my-profile/:part" component={Profile} />
                     <Route path="/my-orders" component={OrderCard} />

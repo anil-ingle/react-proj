@@ -1,4 +1,5 @@
 import { all, spawn, fork, ForkEffect } from 'redux-saga/effects';
+import { LoginSaga } from '../ecall/login';
 
 // import { CategoriesSaga } from '../eComClient/categories';
 // import { ProductsSaga } from '../eComClient/products';
@@ -15,14 +16,13 @@ import { all, spawn, fork, ForkEffect } from 'redux-saga/effects';
 // import { CustomerSaga } from '../eComClient/customer';
 // import { ChildProductSaga } from '../eComClient/childProduct';
 // import { Logger } from '../eComClient/logger';
-import { loginSaga } from '../ecall/login';
 
 export function* rootSaga() {
     // const api = new Api();
     // const log = new Logger();
 
     yield all([
-        // ...(new CategoriesSaga(log)).getSagaWatchers(api),
+        ...(new LoginSaga()).getSagaWatchers(),
         // ...(new ProductsSaga(log)).getSagaWatchers(api),
         // ...(new CartsSaga(log)).getSagaWatchers(api),
         // ...(new CurrenciesSaga(log)).getSagaWatchers(api),

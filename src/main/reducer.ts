@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux-immutable';
 
-// import { reducer as productsReducer } from '../eComClient/products';
+import {  logineducer } from '../ecall/login';
 // import { reducer as categoriesReducer } from '../eComClient/categories';
 // import { reducer as cartsReducer } from '../eComClient/carts';
 // import { reducer as currenciesReducer } from '../eComClient/currencies';
@@ -20,7 +20,7 @@ import { combineReducers } from 'redux-immutable';
 // import { viewProductReducer } from '../eComClient/vproducts';
 
 export default combineReducers({
-    // ...categoriesReducer,
+    ...logineducer,
     // ...viewProductReducer,
     // ...productsReducer,
     // ...cartsReducer,

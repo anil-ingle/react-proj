@@ -23,4 +23,4 @@ const loginReducerr: reducerFn = (loginInfo = INITIAL_STATE, action) => {
     }
 };
 
-// export const logineducer: reducerType = { login: loginReducerr };
+export const logineducer: reducerType = { login: loginReducerr };
