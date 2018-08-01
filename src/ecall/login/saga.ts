@@ -1,6 +1,9 @@
 import { takeLatest, call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { AT } from './Constant';
+type RequestPayload = {
+    type: string, payload: { userName: string, password: string }
+};
 export class LoginSaga {
     // // watcher saga: watches for actions dispatched to the store, starts worker saga
     // * loginSaga() {
@@ -9,42 +12,26 @@ export class LoginSaga {
 
     // function that makes the api request and returns a Promise for response
 
-    login = () => {
-        console.log('login...');
-        let body = {
-            un: '',
-            password: '',
-
-        };
-        return axios({
-            method: 'post',
-            data: body,
-            url: 'http:localhost:2020/onlineparking/mvc/login'
-        });
-    }
 
     // worker saga: makes the api call when watcher saga sees the action
-    * loginWorkerSaga() {
+    * loginWorkerSaga(action: Action<RequestPayload>) {
 
         try {
-            console.log('saga...');
+            console.log('saga...' + action.payload.payload.userName);
             const token = yield call(() => {
                 console.log('login...');
-                let body = {
-                    un: 'anilingle91@gmail.com',
-                    password: '1234',
-
-                };
+                debugger;
+                // let dem = action.payload ;
+                // let email = dem.payload.userName;
+                // let pass=dem.payload.password;
                 return axios({
-                    method: 'POST',
-                    data: body,
-                    url: 'http://localhost:2020/onlineparking/layout/login/login.html'
+                    method: 'get',
+
+                    url: 'http://localhost:2020/onlineparking/' + 'mvc/login?un=' + 'email'  + '&password=' +  'pass' 
                 });
             });
 
-            yield put({ type: AT.login, payload: token });
-
-            // dispatch a success action to the store with the new dog
+            yield put({ type: AT.loged, payload: token });
 
         } catch (error) {
             // 
@@ -52,5 +39,6 @@ export class LoginSaga {
     }
     // watcher saga: watches for actions dispatched to the store, starts worker saga
     public getSagaWatchers = () => [takeEvery(AT.login, this.loginWorkerSaga)];
+
 }
 export default LoginSaga;

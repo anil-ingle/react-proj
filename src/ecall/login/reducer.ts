@@ -17,6 +17,12 @@ const loginReducerr: reducerFn = (loginInfo = INITIAL_STATE, action) => {
                 fetching: true,
                 fetched: false,
             });
+            case AT.loged:
+            return INITIAL_STATE.merge({
+            
+                fetching: true,
+                fetched: false,
+            });
 
         default:
             return loginInfo;
