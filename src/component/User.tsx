@@ -1,9 +1,7 @@
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as styled from 'styled-components';
-import { Input, Form, Icon, Button } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
-import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 import { sagasActions } from '../ecall/login';
 
 const HeaderContainer = styled.default.div`

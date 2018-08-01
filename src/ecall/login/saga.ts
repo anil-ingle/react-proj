@@ -1,6 +1,7 @@
 import { takeLatest, call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 import { AT } from './Constant';
+
 export class LoginSaga {
     // // watcher saga: watches for actions dispatched to the store, starts worker saga
     // * loginSaga() {
@@ -18,6 +19,10 @@ export class LoginSaga {
         };
         return axios({
             method: 'post',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
             data: body,
             url: 'http:localhost:2020/onlineparking/mvc/login'
         });
@@ -36,7 +41,14 @@ export class LoginSaga {
 
                 };
                 return axios({
+
                     method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'text/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
                     data: body,
                     url: 'http://localhost:2020/onlineparking/layout/login/login.html'
                 });
