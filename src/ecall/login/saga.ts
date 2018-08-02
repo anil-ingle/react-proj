@@ -1,62 +1,27 @@
-import { takeLatest, call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { AT } from './Constant';
 
 export class LoginSaga {
-    // // watcher saga: watches for actions dispatched to the store, starts worker saga
-    // * loginSaga() {
-    //     yield takeLatest(AT.login, this.loginWorkerSaga);
-    // }
-
-    // function that makes the api request and returns a Promise for response
-
-    login = () => {
-        console.log('login...');
-        let body = {
-            un: '',
-            password: '',
-
-        };
-        return axios({
-            method: 'post',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            data: body,
-            url: 'http:localhost:2020/onlineparking/mvc/login'
-        });
-    }
 
     // worker saga: makes the api call when watcher saga sees the action
-    * loginWorkerSaga() {
+    * loginWorkerSaga(action: Action<RequestPayload>) {
 
         try {
-            console.log('saga...');
-            const token = yield call(() => {
-                console.log('login...');
-                let body = {
-                    un: 'anilingle91@gmail.com',
-                    password: '1234',
 
-                };
+            const reponse = yield call(() => {
                 return axios({
-
-                    method: 'POST',
-
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'text/json',
-                        'Access-Control-Allow-Origin': '*'
-                    },
-                    data: body,
-                    url: 'http://localhost:2020/onlineparking/layout/login/login.html'
+                    method: 'get',
+                    url: 'http://localhost:2020/onlineparking/' + 'mvc/login?un=' +
+                        action.payload.data.userName + '&password=' + action.payload.data.password
                 });
             });
 
-            yield put({ type: AT.login, payload: token });
-
-            // dispatch a success action to the store with the new dog
+            yield put({ type: AT.loged, payload: reponse });
+            if (reponse && reponse.roll === 1) {
+                // default page rauting
+                (window as any).route('component/User');
+            }
 
         } catch (error) {
             // 
@@ -64,5 +29,6 @@ export class LoginSaga {
     }
     // watcher saga: watches for actions dispatched to the store, starts worker saga
     public getSagaWatchers = () => [takeEvery(AT.login, this.loginWorkerSaga)];
+
 }
 export default LoginSaga;

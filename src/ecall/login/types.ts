@@ -3,7 +3,9 @@ export interface SkPlainObj {
     fetching: boolean;
     fetched: boolean;
 }
-
+export type RequestPayloadLogin = {
+    type: string, payload: { userName: string, password: string }
+};
 export type SkObj = ImMap<SkPlainObj>;
 
 export type reducerFn = baseReducerFn<SkObj>;

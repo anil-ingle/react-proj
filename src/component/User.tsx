@@ -18,44 +18,14 @@ background-color: transparent !important;
   
 `;
 
-interface DispatchProps {
-    login: (loginAction: any) => {};
-}
+export class User extends React.Component {
 
-type Props = DispatchProps & {};
-interface StateProps { }
-
-export class User extends React.Component<Props, StateProps> {
-
-    state = {
-
-        userName: '',
-        password: '',
-
-    };
-    
-    onLogin = () => {
-        // this.props.login({ userName: this.state.userName, password: this.state.password });
-    }
     render() {
 
         return (
             <HeaderContainer>
-                Hello
+                Hello.......
             </HeaderContainer>
         );
     }
 }
-const mapStateToProps = (store: any) => {
-
-    return {
-        // data: store, // selData(store)
-    };
-};
-
-export default connect<StateProps, DispatchProps>(
-    mapStateToProps,
-    {
-        login: sagasActions.loginAction
-    }
-)(User);

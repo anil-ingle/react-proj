@@ -5,7 +5,7 @@ import { Input, Form, Icon, Button } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
 import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 import { sagasActions } from '../ecall/login';
-
+import { Route, Router, Switch } from 'react-router-dom';
 const Bind = styled.default.div`
 width: 100%;
 height: 100%;
@@ -34,6 +34,7 @@ const DisplayFormButton = styled.default.div`
 // connect kelas ka 
 interface DispatchProps {
     login: (loginAction: any) => {};
+
 }
 
 type Props = DispatchProps & {};
@@ -47,7 +48,7 @@ export class LoginPage extends React.Component<Props, StateProps> {
         password: '',
 
     };
-    usernameChange = (e: string) => { 
+    usernameChange = (e: string) => {
         let userName = e;
         this.setState({
             userName: userName
@@ -61,8 +62,14 @@ export class LoginPage extends React.Component<Props, StateProps> {
         });
 
     }
+
     onLogin = () => {
-        this.props.login({ userName: this.state.userName, password: this.state.password });
+        let val = this.props.login({ data: { userName: this.state.userName, password: this.state.password } });
+        let user = this.props;
+      
+        // default page rauting
+        // this.props.data.get('login').get('data').get('roll')
+
     }
     render() {
 
@@ -109,13 +116,14 @@ export class LoginPage extends React.Component<Props, StateProps> {
 const mapStateToProps = (store: any) => {
 
     return {
-        // data: store, // selData(store)
+        data: store, // selData(store)
     };
 };
 
 export default connect<StateProps, DispatchProps>(
     mapStateToProps,
     {
-        login: sagasActions.loginAction
+        login: sagasActions.loginAction,
+
     }
 )(LoginPage);

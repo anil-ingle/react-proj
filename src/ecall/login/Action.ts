@@ -5,10 +5,10 @@ type Actions<P> = {
 
 };
 type RequestPayload = {
-    type: string, payload: { username: string, password: string }
+    type: string, payload: { userName: string, password: string }
 };
 export const loginAction = (payload: RequestPayload): Actions<RequestPayload> => {
-    console.log('fgsggfsdfgdsdtg');
+   
     return ({ type: AT.login, payload });
 };
 

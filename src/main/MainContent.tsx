@@ -24,24 +24,25 @@ export default class MainContent extends React.Component<StateProps>  {
             return (
                 <MainContainer>
                     <Router history={history}>
-                        <Route exact path={'/component//User'} component={User} />
+                        <Route exact path={'/'} component={User} />
                     </Router>
 
                 </MainContainer>
             );
+        } else {
+            return (
+                <MainContainer>
+                    <LoginPage />
+                </MainContainer>
+            );
         }
-        return (
-            <MainContainer>
-                <LoginPage />
-            </MainContainer>
-        );
         // }
 
     }
 }
-const mapStateToProps = () => {
+// const mapStateToProps = () => {
 
-    return {
-        // data: store, // selData(store)
-    };
-};
+//     return {
+//         // data: store, // selData(store)
+//     };
+// };
