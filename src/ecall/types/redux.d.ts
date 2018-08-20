@@ -15,12 +15,15 @@ type RequestPayload = {
     token?: string,
     data?: any
 };
-
+// type RequestPayload = {
+//     type: string, payload: { userName: string, password: string },data: any,
+// };
 // action object
 type Action<P> = {
     type: string,
     payload: P,
-    errors?: EComError
+    
+    
 };
 
 type ActionCreator<P> = (payload?: P) => { type: string, payload?: P };

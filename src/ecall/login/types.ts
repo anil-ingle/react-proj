@@ -3,13 +3,11 @@ export interface SkPlainObj {
     fetching: boolean;
     fetched: boolean;
 }
-export type RequestPayloadLogin = {
-    type: string, payload: { userName: string, password: string }
-};
+
 export type SkObj = ImMap<SkPlainObj>;
 
 export type reducerFn = baseReducerFn<SkObj>;
 
-export type reducerType = { login: reducerFn };
+export type reducerType = { Login: reducerFn, Login_Act: reducerFn };
 
-export type storeObj = { login: SkPlainObj };
+export type storeObj = { Login: SkPlainObj, Login_Act: SkPlainObj };

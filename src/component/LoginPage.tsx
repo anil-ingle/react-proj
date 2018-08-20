@@ -1,80 +1,54 @@
+import { Button, Form, Icon, Input } from 'antd';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import FormItem from 'antd/lib/form/FormItem';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as styled from 'styled-components';
-import { Input, Form, Icon, Button } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
-import 'antd/dist/antd.css';  // or 'antd/dist/antd.less'
 import { sagasActions } from '../ecall/login';
-import { Route, Router, Switch } from 'react-router-dom';
-const Bind = styled.default.div`
-width: 100%;
-height: 100%;
-display: flex;
-flex: 1 1 0%;
-align-items: center;
-justify-content: center;
-font-size: 1.5em;
-color: purple;
-background: linear-gradient(154deg,#008fe2,#00b29c);
-background-color: transparent !important;
-  
-`;
-const FormPage = styled.default.div`
-    width: 400px;
-    position: absolute;
-    top: 100px;
-  
-`;
-const DisplayFormButton = styled.default.div`
-    width: 100px;
-   
-  
-`;
+import { DisplayFormButton, FormPage, LoginContainer } from './App.Style';
+type StoreProps = {
+    data: any,
+};
 
-// connect kelas ka 
-interface DispatchProps {
-    login: (loginAction: any) => {};
+type DispatchProps = {
+    login: (loginAction: any) => {},
+};
 
-}
+type Props = DispatchProps & StoreProps & {};
 
-type Props = DispatchProps & {};
-interface StateProps { }
+type State = {};
 
-export class LoginPage extends React.Component<Props, StateProps> {
+export class LoginPage extends React.Component<Props, State> {
 
     state = {
-
-        userName: '',
-        password: '',
-
+        userName: 'anilingle91@gmail.com',
+        password: '1234',
     };
+
     usernameChange = (e: string) => {
         let userName = e;
         this.setState({
             userName: userName
         });
-
     }
-    passwordCahnge = (e: string) => {
+
+    passwordChange = (e: string) => {
         let password = e;
         this.setState({
             password: password
         });
-
     }
 
     onLogin = () => {
-        let val = this.props.login({ data: { userName: this.state.userName, password: this.state.password } });
-        let user = this.props;
-      
-        // default page rauting
-        // this.props.data.get('login').get('data').get('roll')
-
+        this.props.login({ data: { userName: this.state.userName, password: this.state.password } });
     }
-    render() {
 
+    render() {
+        const info = this.props.data.get('Login').get('data').toJS();
+        if (info) {
+            sessionStorage.setItem('info', JSON.stringify(info));
+        }
         return (
-            <Bind>
+            <LoginContainer>
                 <FormPage>
                     <Form>
                         <FormItem>
@@ -83,6 +57,7 @@ export class LoginPage extends React.Component<Props, StateProps> {
                                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.
                                     usernameChange(e.target.value)}
+                                value={this.state.userName}
                             />
                         </FormItem>
                         <FormItem>
@@ -91,7 +66,8 @@ export class LoginPage extends React.Component<Props, StateProps> {
                                 type="password"
                                 prefix={<Icon type="password" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.
-                                    passwordCahnge(e.target.value)}
+                                    passwordChange(e.target.value)}
+                                value={this.state.password}
                             />
                         </FormItem>
                         <FormItem>
@@ -102,25 +78,24 @@ export class LoginPage extends React.Component<Props, StateProps> {
                                     style={{ width: '400px' }}
                                     onClick={() => this.onLogin()}
                                 >
-
                                     log in
                                 </Button>
                             </DisplayFormButton>
                         </FormItem>
                     </Form>
                 </FormPage>
-            </Bind>
+            </LoginContainer>
         );
     }
 }
-const mapStateToProps = (store: any) => {
 
+const mapStateToProps = (store: any) => {
     return {
         data: store, // selData(store)
     };
 };
 
-export default connect<StateProps, DispatchProps>(
+export default connect<StoreProps, DispatchProps>(
     mapStateToProps,
     {
         login: sagasActions.loginAction,

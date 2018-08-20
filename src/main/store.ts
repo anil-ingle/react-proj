@@ -1,20 +1,19 @@
-import { createStore, applyMiddleware, compose, Store, Middleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import { routerMiddleware } from 'react-router-redux';
-import { fromJS } from 'immutable';
+import { connectRouter, routerMiddleware } from 'connected-react-router/immutable';
 import { History } from 'history';
-
-import reducer from './reducer';
+import { fromJS } from 'immutable';
+import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer from './reducer';
 import { rootSaga } from './sagas';
 
 // tslint:disable-next-line
-export default function configureStore(initialState = {}, history?: History): Store<any> {
-
+export default function configureStore(history: History, initialState = {}): Store<any> {
     // Create the store with two middlewares
     // 1. sagaMiddleware: Makes redux-sagas work
     // 2. routerMiddleware: Syncs the location/URL path to the state
     const sagaMiddleware = createSagaMiddleware();
     const middlewares: Middleware[] = [
+        routerMiddleware(history),
         sagaMiddleware];
 
     if (history) { middlewares.push(routerMiddleware(history)); }
@@ -34,7 +33,7 @@ export default function configureStore(initialState = {}, history?: History): St
     /* eslint-enable */
 
     const store = createStore(
-        reducer,
+        connectRouter(history)(rootReducer),
         fromJS(initialState),
         composeEnhancers(...enhancers));
     sagaMiddleware.run(rootSaga);

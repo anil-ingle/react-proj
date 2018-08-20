@@ -1,61 +1,123 @@
+import { Button } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import { push } from 'connected-react-router/immutable';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as styled from 'styled-components';
-import { sagasActions } from '../ecall/login';
+import {
+    HeaderContainer, History, Home, MyWallet,
+    DivheaderNavRight, NameLogOutDiv, BlockDiv, NameHeader, NameHeaderP
+} from './App.Style';
 
-const HeaderContainer = styled.default.div`
-width: 100%;
-height: 170px;
-display: flex;
-flex: 1 1 0%;
-align-items: center;
-justify-content: center;
-font-size: 1.5em;
-color: purple;
-background: linear-gradient(154deg,#008fe2,#00b29c);
-background-color: transparent !important;
-  
-`;
+type DispatchProps = {
+    onHome: any;
+    onWallet: any;
+    onHistory: any;
+    logout: any;
+};
 
-interface DispatchProps {
-    login: (login: any) => {};
-}
+type StoreProps = {
+    data: any,
+};
 
-type Props = DispatchProps & {};
-interface StateProps { }
+type Props = DispatchProps & StoreProps & {};
 
-export class Header extends React.Component<Props, StateProps> {
+type State = {
+    info: any;
 
+};
+
+export class Header extends React.Component<Props, State> {
     state = {
-
-        userName: '',
-        password: '',
+        info: {} as any,
 
     };
-    
-    onLogin = () => {
-        this.props.login({ userName: this.state.userName, password: this.state.password });
+    onLogout = () => {
+        console.log('logout');
+        sessionStorage.removeItem('info');
+        this.props.logout();
+    }
+    componentDidMount() {
+        let info = JSON.parse(sessionStorage.getItem('info') as any);
+        this.setState({ info });
     }
     render() {
+        let whDisplay = 'none';
+        let info = JSON.parse(sessionStorage.getItem('info') as any);
+        if (info && info.id > 0) {
+            whDisplay = 'flex';
 
+        }
+
+        let style = {
+            backgroundColor: 'transparent'
+            , border: '0px', fontSize: '1.1rem', color: 'white'
+        };
+        let styleLogout = {
+            backgroundColor: 'transparent'
+            , border: '0px', fontSize: '1.1rem', color: 'white'
+        };
         return (
             <HeaderContainer>
-                Hello
+                <Home>
+                    <Button
+                        type="default"
+                        onClick={() => this.props.onHome()}
+                        style={style}
+                    >
+                        Home
+                    </Button>
+                </Home>
+                <MyWallet style={{ display: whDisplay }} >
+                    <Button
+                        type="default"
+                        onClick={() => this.props.onWallet()}
+                        style={style}
+                    >
+                        My Wallet
+                    </Button>
+
+                </MyWallet  >
+                <History style={{ display: whDisplay }}>
+                    <Button
+                        type="default"
+                        onClick={() => this.props.onHistory()}
+                        style={style}
+                    >
+                        History
+                    </Button>
+
+                </History>
+                <NameLogOutDiv style={{ display: whDisplay }} >
+                    <DivheaderNavRight>
+                        <NameHeader >
+                            <NameHeaderP>
+                                {`Welcome ${this.state.info.fName}`}
+                            </NameHeaderP>
+                        </NameHeader>
+
+                    </DivheaderNavRight>
+                    <BlockDiv>
+                        <Button
+                            type="default"
+                            onClick={() => this.onLogout()}
+                            style={styleLogout}
+                        >
+                            Logout
+                        </Button></BlockDiv>
+                </NameLogOutDiv>
             </HeaderContainer>
         );
     }
 }
-const mapStateToProps = (store: any) => {
 
-    return {
-        // data: store, // selData(store)
-    };
-};
-
-export default connect<StateProps, DispatchProps>(
-    mapStateToProps,
+export default connect<StoreProps, DispatchProps, {}, any>(
+    s => ({
+        data: s, // selData(store)
+    }),
     {
-        login: sagasActions.loginAction
+        onHome: () => push('/User'),
+        onWallet: () => push('/User/wallet'),
+        onHistory: () => push('/User/OrderHistory'),
+        logout: () => push('/'),
     }
 )(Header);
