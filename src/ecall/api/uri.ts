@@ -6,6 +6,10 @@ const uri = {
     cityArea: 'mvc/cityArea',
     areaSlot: '/mvc/areaSlot',
     walletMoney: 'mvc/walletMoney',
+    sendMail: 'mvc/sendMail',
+    validateOtp: 'mvc/validateOtp',
+    resetPass: 'mvc/resetPassword',
+    register: 'mvc/registration',
 };
 
 export default uri;

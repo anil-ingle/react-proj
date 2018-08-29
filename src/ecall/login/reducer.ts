@@ -7,19 +7,19 @@ const INITIAL_STATE = fromJS({
     fetching: true,
     fetched: false,
 } as SkPlainObj) as SkObj;
-const loginActReducerr: reducerFn = (loginInfo = INITIAL_STATE, action) => {
-    switch (action.type) {
-        case AT.Login_Act:
-            return INITIAL_STATE.merge({
-                ...action.payload,
-                fetching: true,
-                fetched: false,
-            });
+// const loginActReducerr: reducerFn = (loginInfo = INITIAL_STATE, action) => {
+//     switch (action.type) {
+//         case AT.Login_Act:
+//             return INITIAL_STATE.merge({
+//                 ...action.payload,
+//                 fetching: true,
+//                 fetched: false,
+//             });
 
-        default:
-            return loginInfo;
-    }
-};
+//         default:
+//             return loginInfo;
+//     }
+// };
 
 const loginReducerr: reducerFn = (loginInfo = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -29,9 +29,14 @@ const loginReducerr: reducerFn = (loginInfo = INITIAL_STATE, action) => {
                 fetching: false,
                 fetched: true,
             });
+        case AT.Login_Act:
+            return INITIAL_STATE.merge({
+                fetching: true,
+                fetched: false,
+            });
 
         default:
             return loginInfo;
     }
 };
-export const logineducer: reducerType = { Login_Act: loginActReducerr, Login: loginReducerr };
+export const logineducer: reducerType = { Login: loginReducerr };

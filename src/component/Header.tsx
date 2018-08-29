@@ -1,29 +1,30 @@
 import { Button } from 'antd';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { push } from 'connected-react-router/immutable';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {
-    HeaderContainer, History, Home, MyWallet,
-    DivheaderNavRight, NameLogOutDiv, BlockDiv, NameHeader, NameHeaderP
-} from './App.Style';
+import { selLogin } from '../ecall/login/selectors';
+import * as SC from './App.Style';
+import { EParkingStore } from '../ecall/types';
 
+// { BlockDiv, DivheaderNavRight, HeaderContainer, History, Home, MyWallet, NameHeader, NameHeaderP, NameLogOutDiv }
 type DispatchProps = {
-    onHome: any;
+    onUserHome: any;
     onWallet: any;
     onHistory: any;
     logout: any;
+    onOwner: any;
+    onOwnerWallet: any;
+    onAdmin: any;
 };
 
 type StoreProps = {
-    data: any,
+    data: LoginDataResponseImMap,
 };
 
 type Props = DispatchProps & StoreProps & {};
 
 type State = {
     info: any;
-
 };
 
 export class Header extends React.Component<Props, State> {
@@ -40,83 +41,118 @@ export class Header extends React.Component<Props, State> {
         let info = JSON.parse(sessionStorage.getItem('info') as any);
         this.setState({ info });
     }
-    render() {
-        let whDisplay = 'none';
-        let info = JSON.parse(sessionStorage.getItem('info') as any);
-        if (info && info.id > 0) {
-            whDisplay = 'flex';
 
+    componentWillReceiveProps(props: any) {
+        const info = this.props.data.get('data').toJS();
+        if (info.id > 0) {
+            this.setState({ info });
         }
 
+    }
+    render() {
+        let whDisplay = 'none';
+        let displayPage = [] as any;
+        let info = JSON.parse(sessionStorage.getItem('info') as any);
         let style = {
             backgroundColor: 'transparent'
             , border: '0px', fontSize: '1.1rem', color: 'white'
         };
-        let styleLogout = {
-            backgroundColor: 'transparent'
-            , border: '0px', fontSize: '1.1rem', color: 'white'
-        };
-        return (
-            <HeaderContainer>
-                <Home>
-                    <Button
-                        type="default"
-                        onClick={() => this.props.onHome()}
-                        style={style}
-                    >
-                        Home
-                    </Button>
-                </Home>
-                <MyWallet style={{ display: whDisplay }} >
-                    <Button
+        if (info && info.roll === 1) {
+            whDisplay = 'flex';
+            displayPage.push(<SC.Home key={132}>
+                <SC.FButton
+                    type="default"
+                    onClick={() => this.props.onUserHome()}
+                >
+                    Home
+                </SC.FButton>
+            </SC.Home>);
+            displayPage.push(
+                <SC.MyWallet style={{ display: whDisplay }} key={1234}>
+                    <SC.FButton
                         type="default"
                         onClick={() => this.props.onWallet()}
-                        style={style}
                     >
                         My Wallet
-                    </Button>
+                    </SC.FButton>
 
-                </MyWallet  >
-                <History style={{ display: whDisplay }}>
-                    <Button
+                </SC.MyWallet  >);
+            displayPage.push(<SC.History style={{ display: whDisplay }} key={132123}>
+                <SC.FButton
+                    type="default"
+                    onClick={() => this.props.onHistory()}
+                >
+                    History
+                </SC.FButton>
+            </SC.History>);
+        } else if (info && info.roll === 2) {
+            whDisplay = 'flex';
+            displayPage.push(<SC.Home style={{ display: whDisplay }} key={13663}>
+                <SC.FButton
+                    type="default"
+                    onClick={() => this.props.onOwner()}
+                >
+                    Home
+                </SC.FButton>
+            </SC.Home>);
+            displayPage.push(
+                <SC.MyWallet style={{ display: whDisplay }} key={1234}>
+                    <SC.FButton
                         type="default"
-                        onClick={() => this.props.onHistory()}
-                        style={style}
+                        onClick={() => this.props.onOwnerWallet()}
                     >
-                        History
-                    </Button>
+                        My Wallet
+                    </SC.FButton>
 
-                </History>
-                <NameLogOutDiv style={{ display: whDisplay }} >
-                    <DivheaderNavRight>
-                        <NameHeader >
-                            <NameHeaderP>
+                </SC.MyWallet  >);
+        } else if (info && info.roll === 3) { // FIXME: NO hard coding
+            whDisplay = 'flex';
+            // FIXME: NO hard coding, No external style UNLESS ABSOLUTELY NECESSARY
+            displayPage.push(<SC.Home style={{ display: whDisplay }} key={1311663}>
+                <SC.FButton
+                    type="default"
+                    onClick={() => this.props.onAdmin()}
+                >
+                    Home
+                </SC.FButton>
+            </SC.Home>);
+
+        }
+        return (
+            <SC.HeaderContainer>
+                {displayPage}
+                <SC.NameLogOutDiv style={{ display: whDisplay }} >
+                    <SC.DivheaderNavRight>
+                        <SC.NameHeader >
+                            <SC.NameHeaderP>
                                 {`Welcome ${this.state.info.fName}`}
-                            </NameHeaderP>
-                        </NameHeader>
+                            </SC.NameHeaderP>
+                        </SC.NameHeader>
 
-                    </DivheaderNavRight>
-                    <BlockDiv>
-                        <Button
+                    </SC.DivheaderNavRight>
+                    <SC.BlockDiv>
+                        <SC.FButton
                             type="default"
                             onClick={() => this.onLogout()}
-                            style={styleLogout}
                         >
                             Logout
-                        </Button></BlockDiv>
-                </NameLogOutDiv>
-            </HeaderContainer>
+                        </SC.FButton></SC.BlockDiv>
+                </SC.NameLogOutDiv>
+            </SC.HeaderContainer>
         );
     }
 }
 
-export default connect<StoreProps, DispatchProps, {}, any>(
-    s => ({
-        data: s, // selData(store)
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    store => ({
+        data: selLogin(store)
     }),
     {
-        onHome: () => push('/User'),
+        onUserHome: () => push('/User'),
+        onOwner: () => push('/Owner'),
+        onAdmin: () => push('/Admin'),
         onWallet: () => push('/User/wallet'),
+        onOwnerWallet: () => push('/Owner/OwnerWallet'),
         onHistory: () => push('/User/OrderHistory'),
         logout: () => push('/'),
     }

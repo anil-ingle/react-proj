@@ -8,8 +8,8 @@ type RequestPayload = {
     type: string, payload: { userName: string, password: string }
 };
 
-export const loginAction = (payload: RequestPayload): Actions<RequestPayload> => {
-   
+export const loginAction: actionCreator<RequestPayload> = (payload) => {
+
     return ({ type: AT.Login_Act, payload });
 };
 

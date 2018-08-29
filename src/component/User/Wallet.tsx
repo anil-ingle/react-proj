@@ -1,95 +1,81 @@
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import * as React from 'react';
-import * as styled from 'styled-components';
 import { connect } from 'react-redux';
+import { selLogin } from '../../ecall/login/selectors';
+import { sagasActions } from '../../ecall/user/wallet-money';
+import { selWalletMoney } from '../../ecall/user/wallet-money/selectors';
+import * as SC from '../common/style/UserWalletStyle';
+import WalletMessage from '../common/WalletMessage';
+import { EParkingStore } from '../../ecall/types';
 
-const Container = styled.default.div`
-width: 100%;
- height: 500px; 
-display: flex;
-flex-direction: column;
-flex: 1 1 0%;
- align-items: center; 
-justify-content: center;
-font-size: 1.5em;
-color: purple;
-background: linear-gradient(154deg, #e0e6ec, #273542);
-background-color: transparent !important;
-`;
-const HeadingContent = styled.default.div`
-    padding-top: 5px;
-`;
-const DivSep = styled.default.div`
-    padding-top: 5px;
-`;
-const InputText = styled.default.input`
-    color: lightslategrey;
-    padding-left: 3px;
-`;
-const DivBlock = styled.default.div`
-    padding-top: 1px;
-`;
-const TextContent = styled.default.div`
-    color: darkgreen;
-    padding-left: 5px;
-
-`;
-const HeadingLineTitle = styled.default.h2`
-    padding-top: 5px;
-`;
-const WalletContainer = styled.default.div`
-    padding-top: 5px;
-`;
 type StoreProps = {
+    fName: string,
+    lName: string,
+    email: string,
+    mobileNumber: string,
+    totalAmount: number,
 };
 
 type DispatchProps = {
+    getAmount: (userWalletAction: any) => {}
 };
 
 type Props = DispatchProps & StoreProps & {};
 
-class Wallet extends React.Component {
-
+class Wallet extends React.Component<Props> {
     render() {
+        const { fName = '', lName = '', email = '', mobileNumber = '', totalAmount = 0 } = this.props;
         return (
-            <Container style={{ display: 'flex' }}>
-                <HeadingContent>
-                    <HeadingLineTitle>
+            <SC.Container>
+                <SC.HeadingContent>
+                    <SC.HeadingLineTitle>
                         My Wallet
-                    </HeadingLineTitle>
-                </HeadingContent>
-                <WalletContainer>
-                    <DivSep>
-                        <DivBlock><TextContent>Name</TextContent></DivBlock>
-                        <DivBlock><InputText value="anil Ingle" /></DivBlock>
-                    </DivSep>
-                    <DivSep>
-                        <DivBlock><TextContent>Email</TextContent></DivBlock>
-                        <DivBlock><InputText value="anil@gmail.com" /></DivBlock>
-                    </DivSep>
-                    <DivSep>
-                        <DivBlock><TextContent>Mobile Number </TextContent></DivBlock>
-                        <DivBlock><InputText value="9874563210" /></DivBlock>
-                    </DivSep>
-                    <DivSep>
-                        <DivBlock><TextContent>Balance </TextContent></DivBlock>
-                        <DivBlock><InputText value="9823" />
-                        </DivBlock>
-                    </DivSep>
-                </WalletContainer>
-            </Container>
+                    </SC.HeadingLineTitle>
+                </SC.HeadingContent>
+                <SC.WalletContainer>
+                    <SC.DivSep>
+                        <SC.DivBlock>
+                            <SC.TextContent> {WalletMessage.UserNameText.defaultMessage} </SC.TextContent>
+                        </SC.DivBlock>
+                        <SC.DivBlock><SC.InputText value={fName + ' ' + lName} /></SC.DivBlock>
+                    </SC.DivSep>
+                    <SC.DivSep>
+                        <SC.DivBlock>
+                            <SC.TextContent>  {WalletMessage.UserEmailTest.defaultMessage}</SC.TextContent>
+                        </SC.DivBlock>
+                        <SC.DivBlock><SC.InputText value={email} /></SC.DivBlock>
+                    </SC.DivSep>
+                    <SC.DivSep>
+                        <SC.DivBlock>
+                            <SC.TextContent>  {WalletMessage.UserMobileNumberTest.defaultMessage}</SC.TextContent>
+                        </SC.DivBlock>
+                        <SC.DivBlock><SC.InputText value={mobileNumber} /></SC.DivBlock>
+                    </SC.DivSep>
+                    <SC.DivSep>
+                        <SC.DivBlock>
+                            <SC.TextContent>  {WalletMessage.UserTotalAmountText.defaultMessage} </SC.TextContent>
+                        </SC.DivBlock>
+                        <SC.DivBlock><SC.InputText value={totalAmount} />
+                        </SC.DivBlock>
+                    </SC.DivSep>
+                </SC.WalletContainer>
+            </SC.Container>
         );
     }
 }
-// export  User;
-const mapStateToProps = (store: any) => {
-    return {
-    };
-};
 
-export default connect<StoreProps, DispatchProps>(
-    mapStateToProps,
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    (store) => {
+        const pp = selWalletMoney(store);
+        const qq = selLogin(store);
+        return {
+            fName: 'GG',
+            lName: 'sd',
+            email: 'sd',
+            mobileNumber: 'sd',
+            totalAmount: 0
+        };
+    },
     {
-
+        getAmount: sagasActions.walletMoneyAction,
     }
 )(Wallet);

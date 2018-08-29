@@ -1,10 +1,11 @@
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { Select } from 'antd';
 import * as React from 'react';
-import * as styled from 'styled-components';
 import { connect } from 'react-redux';
+import * as styled from 'styled-components';
 import { sagasActions as citySaga } from '../../ecall/user/city-area';
+import { selCityArea } from '../../ecall/user/city-area/selectors';
 import { sagasActions as parkingArea } from '../../ecall/user/parking-slot';
+import { EParkingStore } from '../../ecall/types';
 const Option = Select.Option;
 
 const CityAreaContainer = styled.default.div`
@@ -12,10 +13,10 @@ const CityAreaContainer = styled.default.div`
     padding:0px;   
 `;
 type StoreProps = {
-    data: any,
+    data: CityAreaDataResponseImMap,
 };
 interface StateProps {
-    id: any;
+    id: string;
 }
 type DispatchProps = {
     getCityArea: (cityAreaAction: any) => {}
@@ -23,13 +24,18 @@ type DispatchProps = {
 };
 
 type Props = StateProps & StoreProps & DispatchProps & {};
-type State = {};
+type State = {
+    curCityId: number;
+};
 export class CityArea extends React.Component<Props, State> {
+    state = {
+        curCityId: 0,
+    };
     handleChange = (id: any) => {
         if (id !== 0) {
             this.props.getParkingSlot({ data: { id } });
         }
-
+        this.setState({ curCityId: id });
     }
 
     componentWillReceiveProps(props: any) {
@@ -44,8 +50,8 @@ export class CityArea extends React.Component<Props, State> {
 
     render() {
         let cityArea: Array<JSX.Element> = [];
-        if (this.props.data.get('cityArea').get('data')) {
-            this.props.data.getIn(['cityArea', 'data']).map((c: any) => {
+        if (this.props.data.get('data')) {
+            this.props.data.getIn(['data']).map((c: any) => {
                 let areaId = 0, areaName = '';
                 if (c && c.size > 0) {
                     areaId = c.getIn(['areaId']);
@@ -61,7 +67,7 @@ export class CityArea extends React.Component<Props, State> {
                 <Select
                     showSearch
                     style={{ width: '250px' }}
-                    placeholder="Please select city area"
+                    placeholder=" Select city area"
                     optionFilterProp="children"
                     onChange={this.handleChange}
                 >
@@ -71,15 +77,11 @@ export class CityArea extends React.Component<Props, State> {
         );
     }
 }
-// export  User;
-const mapStateToProps = (store: any) => {
-    return {
-        data: store, // selData(store)
-    };
-};
 
-export default connect<StoreProps, DispatchProps>(
-    mapStateToProps,
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    store => ({
+        data: selCityArea(store)
+    }),
     {
         getCityArea: citySaga.cityAreaAction,
         getParkingSlot: parkingArea.parkingAreaAction,

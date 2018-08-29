@@ -11,6 +11,7 @@ export class ParkingAreaSlotSaga {
         let res = validation(action);
         if (!res.isError) {
             try {
+                // toastr.warning('res.msg');
                 const reponse = yield call(() => {
                     return axios({
                         method: 'GET',

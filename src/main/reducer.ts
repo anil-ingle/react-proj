@@ -6,7 +6,13 @@ import { cityAreaReducer } from '../ecall/user/city-area';
 import { parkingSlotReducer } from '../ecall/user/parking-slot';
 import { bookSlotAction, bookSlotReducer } from '../ecall/user/book-slot';
 import { walletMoneyReducer } from '../ecall/user/wallet-money';
-import { userIdTimeReducer } from '../ecall/user/user-info';
+import { setUserTimeReducer } from '../ecall/user/user-time-info';
+import { setUserCityIdActionReducer } from '../ecall/user/user-city-info';
+import { ownerAddressReducer } from '../ecall/owner/own-address';
+import { forgetpassReducer } from '../ecall/forgetpassword';
+import { otpReducer } from '../ecall/otp';
+import { resetPassReducer } from '../ecall/reset-password';
+import { registerReducer } from '../ecall/register';
 
 export default combineReducers({
     ...logineducer,
@@ -15,6 +21,13 @@ export default combineReducers({
     ...parkingSlotReducer,
     ...bookSlotAction,
     ...walletMoneyReducer,
-    ...userIdTimeReducer,
+    ...setUserTimeReducer,
     ...bookSlotReducer,
+    ...setUserCityIdActionReducer,
+    ...ownerAddressReducer,
+    ...forgetpassReducer,
+    ...otpReducer,
+    ...resetPassReducer,
+    ...registerReducer,
+
 });

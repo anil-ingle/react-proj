@@ -43,7 +43,11 @@ interface DataResponse<D, I={}, M={}> {
     meta?: M;
     errors?: APIError //FIXME: added this
 }
-
+interface SlotResponse<D> {
+    data?: D;
+}
+interface ParkingSlot<> {
+}
 interface APIError {
     error?: any[];
     message?: string;

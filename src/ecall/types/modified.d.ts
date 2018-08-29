@@ -1,38 +1,32 @@
 import { AxiosResponse } from 'axios';
-// import { storeObj as storeAddresses } from '../addresses';
-// import { storeObj as storeCarts } from '../carts';
-// import { storeObj as storeCategories } from '../categories';
-// import { storeObj as storeChildProduct } from '../childProduct';
-// import { storeObj as storeCollections } from '../collections';
-// import { storeObj as storeCurrencies } from '../currencies';
-// import { storeObj as storeCustomer } from '../customer';
-// import { storeObj as storeOrders } from '../orders';
-// import { storeObj as storeProducts } from '../products';
-// import { storeObj as storeVProducts } from '../vproducts';
-// import { storeObj as storeSelectedOrder } from '../selectedOrder';
-// import { storeObj as storeSelectedProduct } from '../selectedProduct';
-// import { storeObj as storeLanguage } from '../../main/i18n';
-// import { storeObj as storeUser } from '../user';
+import { storeObj as storeForgetPass } from '../forgetpassword';
+import { storeObj as storeLogin } from '../login';
+import { storeObj as storeOtp } from '../otp';
+import { storeObj as storeregister } from '../register';
+import { storeObj as storeReset } from '../reset-password';
+import { storeObj as storeCity } from '../user/city';
+import { storeObj as storeCityArea } from '../user/city-area';
+import { storeObj as storeParkingSlot } from '../user/parking-slot';
+import { storeObj as storeUserTime } from '../user/user-time-info';
+import { storeObj as storeWalletMoney } from '../user/wallet-money';
 
-export interface EComResponse<T> extends AxiosResponse {
+
+export interface ParkingResponse<T> extends AxiosResponse {
     data: T
 }
 
-// export type EComStore = ImMap<
-//     storeAddresses &
-//     storeCategories &
-//     storeCarts &
-//     storeChildProduct &
-//     storeCollections &
-//     storeCurrencies &
-//     storeCustomer &
-//     storeOrders &
-//     storeProducts &
-//     storeSelectedOrder &
-//     storeSelectedProduct &
-//     storeUser &
-//     storeLanguage &
-//     storeVProducts
-//     >;
+export type EParkingStore = ImMap<
+    storeLogin &
+    storeCity &
+    storeCityArea &
+    storeParkingSlot &
+    storeWalletMoney &
+    storeUserTime &
+    storeForgetPass &
+    storeOtp &
+    storeReset &
+    storeregister
+    >;
 
-// type MSTP<SP> = (store: EComStore) => SP;
+type MSTP<SP> = (store: EParkingStore) => SP;
+

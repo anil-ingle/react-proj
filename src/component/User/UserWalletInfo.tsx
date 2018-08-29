@@ -1,14 +1,16 @@
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+
+import { Modal } from 'antd';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button } from 'antd';
-import WalletMessage from './WalletMessage';
-import {
-    UserWalletContainer, UserInfoDiv, WalletTextHeader, WalletTextContent, UserWalletGrid
-} from './style/UserWalletStyle';
+import { EParkingStore } from '../../ecall/types';
 import { sagasActions } from '../../ecall/user/book-slot';
+import { selCityAreaAct } from '../../ecall/user/city-area/selectors';
+import { selUserTime } from '../../ecall/user/user-time-info/selectors';
+import * as SC from '../common/style/UserWalletStyle';
+import WalletMessage from '../common/WalletMessage';
 type StoreProps = {
-    data: any,
+    uTime: UserTimeImMap,
+    cityArea: CityAreaDataResponseImMap
 };
 
 type DispatchProps = {
@@ -19,7 +21,6 @@ interface StateProps {
     closeFlag: boolean;
     closeModal: any;
     bookInfo: any;
-
 }
 
 type Props = DispatchProps & StoreProps & StateProps & {};
@@ -44,12 +45,13 @@ class UserWalletInfo extends React.Component<Props> {
 
     handleOk = (e: any) => {
         let aId = 0;
-        let selectedTimeAndId = this.props.data.get('userIdTimeAct').get('data').toJS();
-        if (selectedTimeAndId && this.state.info) {
-            aId = parseInt(selectedTimeAndId.id) + 3;
+        let cityArea = this.props.cityArea.get('data').toJS();
+        let selectedTime = this.props.uTime.get('time');
+        if (cityArea && this.state.info && selectedTime > 0) {
+            aId = parseInt(cityArea.id, 10) + 3;
             this.props.bookSlot({
                 data: {
-                    areaId: aId, timeTaken: selectedTimeAndId.time,
+                    areaId: aId, timeTaken: selectedTime,
                     bookedSlots: this.props.bookInfo.slotNum, wBill: this.props.bookInfo.bill,
                     wTotal: this.props.bookInfo.availbleAmount, userId: this.state.info.id,
                 }
@@ -65,7 +67,7 @@ class UserWalletInfo extends React.Component<Props> {
 
     render() {
         return (
-            <UserWalletContainer>
+            <SC.UserWalletContainer>
                 <Modal
                     style={{ textAlign: 'center' }}
                     width={'550px'}
@@ -74,47 +76,45 @@ class UserWalletInfo extends React.Component<Props> {
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <UserWalletGrid>
-                        <UserInfoDiv>
-                            <WalletTextHeader>
+                    <SC.UserWalletGrid>
+                        <SC.UserInfoDiv>
+                            <SC.WalletTextHeader>
                                 {WalletMessage.UserNameText.defaultMessage}:
-                            </WalletTextHeader>
-                            <WalletTextContent>
-                                {' ' + this.state.info.fName + ' ' + this.state.info.lName}
-                            </WalletTextContent>
-                        </UserInfoDiv>
-                        <UserInfoDiv>
-                            <WalletTextHeader>
+                            </SC.WalletTextHeader>
+                            <SC.WalletTextContent>
+                                {this.state.info.fName + ' ' + this.state.info.lName}
+                            </SC.WalletTextContent>
+                        </SC.UserInfoDiv>
+                        <SC.UserInfoDiv>
+                            <SC.WalletTextHeader>
                                 {WalletMessage.UserTotalAmountText.defaultMessage}:
-                                </WalletTextHeader>
-                            <WalletTextContent>
-                                {' ' + this.props.bookInfo.availbleAmount}
-                            </WalletTextContent>
-                        </UserInfoDiv>
-                        <UserInfoDiv>
-                            <WalletTextHeader>
+                                </SC.WalletTextHeader>
+                            <SC.WalletTextContent>
+                                {this.props.bookInfo.availbleAmount}
+                            </SC.WalletTextContent>
+                        </SC.UserInfoDiv>
+                        <SC.UserInfoDiv>
+                            <SC.WalletTextHeader>
                                 {WalletMessage.UserBillText.defaultMessage}:
-                            </WalletTextHeader>
-                            <WalletTextContent>
-                                {' ' + this.props.bookInfo.bill}
-                            </WalletTextContent>
-                        </UserInfoDiv>
-                    </UserWalletGrid>
+                            </SC.WalletTextHeader>
+                            <SC.WalletTextContent>
+                                {this.props.bookInfo.bill}
+                            </SC.WalletTextContent>
+                        </SC.UserInfoDiv>
+                    </SC.UserWalletGrid>
                 </Modal>
 
-            </UserWalletContainer>
+            </SC.UserWalletContainer>
         );
     }
 }
-// export  User;
-const mapStateToProps = (store: any) => {
-    return {
-        data: store,
-    };
-};
 
-export default connect<StoreProps, DispatchProps>(
-    mapStateToProps,
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    s => ({
+        uTime: selUserTime(s),
+        cityArea: selCityAreaAct(s),
+
+    }),
     {
         bookSlot: sagasActions.bookSlotAction,
     }

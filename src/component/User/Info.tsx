@@ -1,6 +1,5 @@
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import * as React from 'react';
-import { InfoContainer, UserInfo } from './style/UserWalletStyle';
+import { InfoContainer, UserInfo } from '../common/style/UserWalletStyle';
 
 const Info: React.SFC = () => (
     <InfoContainer>

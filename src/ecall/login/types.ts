@@ -8,6 +8,6 @@ export type SkObj = ImMap<SkPlainObj>;
 
 export type reducerFn = baseReducerFn<SkObj>;
 
-export type reducerType = { Login: reducerFn, Login_Act: reducerFn };
+export type reducerType = { Login: reducerFn, };
 
-export type storeObj = { Login: SkPlainObj, Login_Act: SkPlainObj };
+export type storeObj = { Login: SkPlainObj};

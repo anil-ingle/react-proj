@@ -1,16 +1,18 @@
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import * as React from 'react';
-import * as styled from 'styled-components';
 import { connect } from 'react-redux';
+import * as styled from 'styled-components';
+import { EParkingStore } from '../../ecall/types';
 import ReginalFilter from './City';
-import ParkingSlot from './ParkingSlot';
 import Info from './Info';
+import ParkingSlot from './ParkingSlot';
 
 const UserContainer = styled.default.div`
     width: 100%;
-    height: 100%;
+    height: inherit;
     display: flex;
     flex-direction: column;
+    background:linear-gradient(154deg,#eac2a6,#7cd27a);
+    background-color: transparent !important;
 `;
 
 type StoreProps = {};
@@ -27,12 +29,9 @@ const User: React.SFC<Props> = () => (
     </UserContainer>
 );
 
-const mapStateToProps = (store: any) => {
-    return {
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    store => ({
         data: store, // selData(store)
-    };
-};
 
-export default connect<StoreProps, DispatchProps>(
-    mapStateToProps
+    }),
 )(User);

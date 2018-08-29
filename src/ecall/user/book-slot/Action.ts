@@ -6,7 +6,7 @@ type RequestPayload = {
         wBill: number, wTotal: number, userId: number
     }
 };
-export const bookSlotAction = (payload: RequestPayload): Action<RequestPayload> => {
+export const bookSlotAction: actionCreator<RequestPayload> = (payload) => {
     return ({ type: AT.book_slot_act, payload });
 };
 export const sagasActions = {

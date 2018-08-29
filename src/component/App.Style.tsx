@@ -17,6 +17,7 @@ export const HeaderContainer = styled.default.div`
 export const Home = styled.default.div`
     align-items: center;
 `;
+
 export const MyWallet = styled.default.div`
     align-items: center;
 `;
@@ -26,18 +27,18 @@ export const History = styled.default.div`
 export const LoginContainer = styled.default.div`
     width: 100%;
     height: 100%;
+    padding-bottom: 25px;
     display: flex;
+    flex-direction: column;
     flex: 1 1 0%;
     align-items: center;
     justify-content: center;
     font-size: 1.5em;
-    background: linear-gradient(154deg,#008fe2,#00b29c);
+    background: linear-gradient(154deg,#6cafa6,#474848);
     background-color: transparent !important;
 `;
 export const FormPage = styled.default.div`
     width: 400px;
-    position: absolute;
-    top: 100px;
 `;
 export const DisplayFormButton = styled.default.div`
     width: 100px;
@@ -70,4 +71,30 @@ export const NameHeader = styled.default.div`
 `;
 export const BlockDiv = styled.default.div`
    
+`;
+export const HeaderLineTitle = styled.default.h2`
+    color: white;
+    font-size: 25px;
+    margin: 5px;
+    font-family: monospace;
+`;
+export const Registration = styled.default.button`
+    background: transparent;
+    border: 0px;
+    color: white;
+    cursor: pointer;
+`;
+export const ForgetPasswordButton = styled.default.button`
+    background: transparent;
+    border: 0px;
+    color: white;
+    float: right;
+    cursor: pointer;
+`;
+
+export const FButton = styled.default.button`
+        background-color: transparent;
+        border: 0px;
+        font-size: 1.1rem;
+        color: white;
 `;

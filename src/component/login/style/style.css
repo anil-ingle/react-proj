@@ -1,0 +1,13 @@
+/* .ant-modal-footer button + button {
+    margin-left: 8px;
+    margin-bottom: 0;
+    display: none !important;
+} */
+
+.ant-modal-footer {
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 16px;
+    text-align: right;
+    border-radius: 0 0 4px 4px;
+    display:none
+}

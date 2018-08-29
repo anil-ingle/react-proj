@@ -3,7 +3,7 @@ import { AT } from './Constant';
 type RequestPayload = {
     type: string, payload: { id: any }
 };
-export const walletMoneyAction = (payload: RequestPayload): Action<RequestPayload> => {
+export const walletMoneyAction: actionCreator<RequestPayload> = (payload) => {
     return ({ type: AT.wallet_mony_act, payload });
 };
 export const sagasActions = {

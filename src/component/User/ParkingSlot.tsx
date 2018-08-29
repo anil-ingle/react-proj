@@ -1,16 +1,19 @@
 
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {
-    Slot, ButtonSubmit, DisplayFlex,
-    ParkingSlotContainer, SlotArea, SlotDiv
-} from './style/ParlingSlotStyle';
-import UserWalletInfo from './UserWalletInfo';
-import { sagasActions } from '../../ecall/user/wallet-money';
 import * as toastr from 'toastr';
+import { EParkingStore } from '../../ecall/types';
+import { selParkingSlot } from '../../ecall/user/parking-slot/selectors';
+import { selUserTime } from '../../ecall/user/user-time-info/selectors';
+import { sagasActions } from '../../ecall/user/wallet-money';
+import { selWalletMoney } from '../../ecall/user/wallet-money/selectors';
+import { DisplayFlex, ParkingSlotContainer, Slot } from '../common/style/ParlingSlotStyle';
+import { ButtonSubmit, SlotArea, SlotDiv } from './style/ParlingSlotStyle';
+import UserWalletInfo from './UserWalletInfo';
 type StoreProps = {
-    data: any,
+    data: ParkingSlotResponseImMap,
+    wData: WalletMoneyResponseImMap,
+    uTime: UserTimeImMap,
 };
 
 type DispatchProps = {
@@ -24,19 +27,21 @@ type State = {
     selectedSlots: object[];
     openFlag: boolean;
     closeFlag: boolean;
-    userBill: number,
+    userBill: number;
 };
 class ParkingSlot extends React.Component<Props, State> {
     state = {
         selectedSlots: [] as any[],
         openFlag: false,
         closeFlag: false,
-        dimmerFlag: false,
         userBill: 0,
+        count: 0,
     };
     componentDidMount() {
         let info = JSON.parse(sessionStorage.getItem('info') as any);
-        this.props.getAmount(info.id);
+        if (info && info.length > 0) {
+            this.props.getAmount(info.id);
+        }
     }
     findIndexOfSelectedSlots = (e: any) => {
         return this.state.selectedSlots.map(x => x.slotId).indexOf(e.slotId);
@@ -54,20 +59,23 @@ class ParkingSlot extends React.Component<Props, State> {
         this.setState({ selectedSlots: currentSlots });
     }
     bookSlot = () => {
-        let bill = 0;
-        let selectedTimeAndId = this.props.data.get('userIdTimeAct').get('data').toJS();
-        if (selectedTimeAndId && this.state.selectedSlots.length > 0) {
-            for (let slot of this.state.selectedSlots) {
-                if (slot.slotNumber > 5) {
-                    bill += selectedTimeAndId.time * 30;
-                } else {
-                    bill += selectedTimeAndId.time * 20;
+        if (this.props.uTime.get('time')) {
+            let selectedTime = this.props.uTime.get('time');
+            if (selectedTime && this.state.selectedSlots.length > 0) {
+                let bill: number = 0;
+                for (let slot of this.state.selectedSlots) {
+                    if (slot.slotNumber > 5) {
+                        bill = bill + (parseInt(selectedTime, 10) * 30);
+                    } else {
+                        bill = bill + (parseInt(selectedTime, 10) * 20);
+                    }
                 }
+                this.setState({ openFlag: true, closeFlag: false, userBill: bill });
+            } else {
+                toastr.warning('Plz select All field ');
             }
-
-            this.setState({ openFlag: true, closeFlag: false, userBill: bill });
         } else {
-            toastr.warning('Plz select slot first');
+            toastr.warning('Plz select Time');
         }
 
     }
@@ -82,9 +90,10 @@ class ParkingSlot extends React.Component<Props, State> {
     }
 
     renderSlots = () => {
-        if (this.props.data.get('parkingSlot').get('data')) {
-            const val = this.props.data.get('parkingSlot').get('data').toJS();
-            if (val) {
+        if (this.props.data.get('data')) {
+            const val = this.props.data.get('data').toJS();
+            if (val && val.length > 0) {
+                this.state.count = 9;
                 return val.map((v: any, i: number) => {
                     return (<Slot
                         key={i}
@@ -103,7 +112,7 @@ class ParkingSlot extends React.Component<Props, State> {
             slotNum += num.slotNumber + ',';
         });
         slotNum = slotNum.toString().slice(0, -1);
-        let walletAvailableMoney = this.props.data.get('wallet_money').get('data').toJS();
+        let walletAvailableMoney = this.props.wData.get('data').toJS();
         let bookInfo = {} as any;
         if (walletAvailableMoney && this.state.userBill > 0) {
             bookInfo.availbleAmount = walletAvailableMoney.totalAmount;
@@ -136,14 +145,13 @@ class ParkingSlot extends React.Component<Props, State> {
         );
     }
 }
-const mapStateToProps = (store: any) => {
-    return {
-        data: store, // selData(store)
-    };
-};
 
-export default connect<StoreProps, DispatchProps>(
-    mapStateToProps,
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    store => ({
+        data: selParkingSlot(store),
+        wData: selWalletMoney(store),
+        uTime: selUserTime(store)
+    }),
     {
         getAmount: sagasActions.walletMoneyAction,
     }

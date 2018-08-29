@@ -50,11 +50,11 @@
         "jsx-no-multiline-js": false,
         "jsx-no-string-ref": true,
         "jsx-self-close": true,
-        "jsx-wrap-multiline": true,
+        "jsx-wrap-multiline": false,
         "label-position": true,
         "max-line-length": [
             true,
-            120
+            140
         ],
         "member-ordering": [
             true,

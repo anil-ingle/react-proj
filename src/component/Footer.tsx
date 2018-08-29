@@ -1,7 +1,7 @@
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as styled from 'styled-components';
+import { EParkingStore } from '../ecall/types';
 
 const HeaderContainer = styled.default.div`
 width: 100%;
@@ -19,16 +19,13 @@ class Footer extends React.Component {
 
     render() {
         return (
-            <div>hello</div>
+            <div>Footer</div>
         );
     }
 }
-// export  User;
-const mapStateToProps = (store: any) => {
-    return {
-    };
-};
 
-export default connect<StoreProps, DispatchProps>(
-    mapStateToProps,
+export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
+    store => ({
+        //
+    }),
 )(Footer);
