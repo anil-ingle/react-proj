@@ -12,6 +12,7 @@ import OwnerWallet from '../component/Owner/OwnerWallet';
 import Admin from '../component/Admin/Admin';
 import Otp from '../component/login/Otp';
 import PasswordResetPage from '../component/login/PasswordResetPage';
+import index from '../component/page/register/index';
 
 const MainContainer = styled.default.div`
     width: 100%;
@@ -50,6 +51,15 @@ class MainContent extends React.Component {
                     <Switch>
                         <Route exact path={'/'} component={LoginPage} />
                         <Route exact path={'/PasswordResetPage'} component={PasswordResetPage} />
+                    </Switch>
+                </MainContainer >
+            );
+        } else if (window.reg === true) {
+            return (
+                <MainContainer>
+                    <Switch>
+                        <Route exact path={'/'} component={LoginPage} />
+                        <Route exact path={'/Registration'} component={index} />
                     </Switch>
                 </MainContainer >
             );

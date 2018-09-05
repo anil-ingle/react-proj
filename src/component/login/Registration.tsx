@@ -56,6 +56,7 @@ type State = form & {
     conformPasswordError: boolean;
 };
 const Option = Select.Option;
+
 type Props = DispatchProps & StoreProps & StateProps & {};
 
 class Registration extends React.Component<Props, State> {
@@ -86,7 +87,6 @@ class Registration extends React.Component<Props, State> {
         mobileNumberErrorMsg: '',
         dobErrorMsg: '',
         cityIdErrorMsg: '',
-
     };
     componentDidMount() {
         this.props.getCity();
@@ -107,7 +107,7 @@ class Registration extends React.Component<Props, State> {
                     visible={this.props.isOpen}
                     onCancel={this.handleCancel}
                 >
-                    <Form>
+                    <Form  >
                         <SC.DisplayFlexDiv>
                             <SC.FormRegister>
                                 <Input
@@ -236,8 +236,7 @@ class Registration extends React.Component<Props, State> {
     }
     register = () => {
         (window as any).otp = true;
-        let error = this.validate();
-        if (error) {
+        if (this.validate()) {
             // toastr.warning('error');
         } else {
             let registerForm: form = {};
@@ -251,10 +250,8 @@ class Registration extends React.Component<Props, State> {
             registerForm.cityId = st.cityId;
             registerForm.gender = st.gender;
             registerForm.currentTime = moment(new Date()).format('YYYY-MM-DD');
-            if (this.register) {
-                this.props.register({ data: { registerForm: registerForm } });
-                this.closeModal();
-            }
+            this.props.register({ data: { registerForm: registerForm } });
+            this.closeModal();
         }
     }
     closeModal = () => {
@@ -391,6 +388,7 @@ class Registration extends React.Component<Props, State> {
             cityIdError = true;
             cityIdErrorMsg = 'Please Select city';
         }
+
         this.setState({
             fNameError, fNameErrorMsg, lNameError, lNameErrorMsg, passwordError, passwordErrorMsg,
             emailError, emailErrorMsg, mobileNumberError, mobileNumberErrorMsg, dobError,
@@ -403,6 +401,7 @@ class Registration extends React.Component<Props, State> {
         }
         return isError;
     }
+
     reset = () => {
         this.setState({
             fName: '', lName: '', email: '', password: '', mobileNumber: '', dob: '', cityId: '',

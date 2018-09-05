@@ -7,8 +7,8 @@ import { selLogin } from '../../ecall/login/selectors';
 import { EParkingStore } from '../../ecall/types';
 import * as SC from '../App.Style';
 import ForgetPassword from './ForgetPassword';
-import Registration from './Registration';
 import { selForgetPass } from '../../ecall/forgetpassword/selectors';
+import { push } from 'connected-react-router';
 type StoreProps = {
     data: LoginDataResponseImMap,
     store: any,
@@ -16,6 +16,7 @@ type StoreProps = {
 
 type DispatchProps = {
     login: (loginAction: any) => {},
+    registration: any;
 };
 
 type Props = DispatchProps & StoreProps & {};
@@ -28,7 +29,11 @@ type State = {
     isOpen: boolean;
     isClose: boolean;
 };
-
+declare global {
+    interface Window {
+        reg: boolean;
+    }
+}
 export class LoginPage extends React.Component<Props, State> {
 
     state = {
@@ -62,8 +67,10 @@ export class LoginPage extends React.Component<Props, State> {
             this.onLogin();
         }
     }
-    registration = () => {
-        this.setState({ isOpen: true, isClose: false });
+    reg = () => {
+        // this.setState({ isOpen: true, isClose: false });
+        window.reg = true;
+        this.props.registration();
 
     }
     oncloseModal = () => {
@@ -80,7 +87,7 @@ export class LoginPage extends React.Component<Props, State> {
         if (info) {
             sessionStorage.setItem('info', JSON.stringify(info));
         }
-
+        // onClick={this.props.registration()}
         return (
             < SC.LoginContainer >
                 {this.props.store.get('fetching') ? <Spin style={{ color: 'red' }} size="large" /> : ''}
@@ -89,11 +96,11 @@ export class LoginPage extends React.Component<Props, State> {
                     closeFlag={this.state.closeFlag}
                     closeModal={this.oncloseModal}
                 />
-                <Registration
+                {/* <Registration
                     isOpen={this.state.isOpen}
                     isClose={this.state.isClose}
                     closeModal1={this.oncloseModal1}
-                />
+                /> */}
                 <SC.BlockDiv>
                     <SC.HeaderLineTitle>Online Parking</SC.HeaderLineTitle>
                 </SC.BlockDiv>
@@ -133,7 +140,7 @@ export class LoginPage extends React.Component<Props, State> {
                                     log in
                                 </Button>
                             </SC.DisplayFormButton>
-                            Or <SC.Registration onClick={this.registration}>register now!</SC.Registration>
+                            Or <SC.Registration onClick={this.reg}>register now!</SC.Registration>
                         </FormItem>
                     </Form>
                 </SC.FormPage>
@@ -150,6 +157,7 @@ export default connect<StoreProps, DispatchProps, {}, EParkingStore>(
     }),
     {
         login: sagasActions.loginAction,
+        registration: () => push('/Registration'),
 
     }
 )(LoginPage);
